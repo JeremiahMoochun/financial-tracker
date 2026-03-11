@@ -1,7 +1,23 @@
-export interface Expense {
-  id: number;
-  amount: number;
-  category: string;
-  reason: string;
-  date: string;
-}
+import mongoose from "mongoose";
+
+const expenseSchema = new mongoose.Schema({
+  amount: {
+    type: Number,
+    required: true
+  },
+  category: {
+    type: String,
+    required: true
+  },
+  reason: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: Date,
+    required: true
+  }
+});
+
+export const Expense = mongoose.model("Expense", expenseSchema);
+
