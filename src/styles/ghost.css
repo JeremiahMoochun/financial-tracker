@@ -1,0 +1,448 @@
+.ghost-habit-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ghost-habit-card {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+  border: 1px solid rgba(91, 95, 151, 0.2);
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 4px 20px rgba(49, 46, 129, 0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  cursor: default;
+  outline: none;
+}
+
+/* Lift above the next card so the expanded bubble isn’t painted underneath (fixes first row e.g. Entertainment). */
+.ghost-habit-card:hover,
+.ghost-habit-card:focus-within {
+  z-index: 3;
+  border-color: rgba(124, 58, 237, 0.45);
+  box-shadow: 0 8px 32px rgba(76, 29, 149, 0.12);
+  transform: translateY(-1px);
+}
+
+.ghost-habit-card__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.ghost-pulse {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-top: 0.35rem;
+  flex-shrink: 0;
+  background: radial-gradient(circle at 30% 30%, #c4b5fd, #7c3aed 55%, #4c1d95);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.7);
+  animation: ghost-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes ghost-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(124, 58, 237, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(124, 58, 237, 0.85);
+    transform: scale(1.08);
+  }
+}
+
+.ghost-habit-card__cat {
+  font-weight: 700;
+  color: #312e81;
+  font-size: 1.05rem;
+}
+
+.ghost-habit-card__sub {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin-top: 0.15rem;
+}
+
+.ghost-habit-card__gap {
+  font-size: 1.2rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #5b5f97;
+  text-align: right;
+  line-height: 1.2;
+}
+
+.ghost-habit-card__ccy {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-left: 0.2rem;
+}
+
+.ghost-habit-card__bar-track {
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(91, 95, 151, 0.12);
+  margin-top: 0.85rem;
+  overflow: hidden;
+}
+
+.ghost-habit-card__bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #4cc9f0, #7c3aed 60%, #5b5f97);
+  transition: width 0.4s ease;
+}
+
+.ghost-bubble {
+  margin-top: 0.85rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(91, 95, 151, 0.09) 0%, rgba(124, 58, 237, 0.06) 100%);
+  border: 1px solid rgba(91, 95, 151, 0.18);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transform: translateY(8px);
+  filter: blur(10px);
+  transition:
+    opacity 0.45s ease,
+    filter 0.5s ease,
+    transform 0.45s ease,
+    max-height 0.45s ease;
+  pointer-events: none;
+}
+
+.ghost-habit-card:hover .ghost-bubble,
+.ghost-habit-card:focus-within .ghost-bubble {
+  opacity: 1;
+  max-height: min(640px, 85vh);
+  overflow-y: auto;
+  filter: blur(0);
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.ghost-bubble__title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #4338ca;
+  margin-bottom: 0.35rem;
+}
+
+.ghost-bubble__body {
+  font-size: 0.86rem;
+  color: #334155;
+  line-height: 1.45;
+  margin-bottom: 0.5rem;
+}
+
+.ghost-bubble__tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #5b5f97;
+  background: rgba(91, 95, 151, 0.12);
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+
+.ghost-signals {
+  margin-top: 2rem;
+  padding: 1.25rem 1.25rem 1.5rem;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #1e1b4b 0%, #312e81 55%, #3730a3 100%);
+  color: #e2e8f0;
+  box-shadow: 0 16px 48px rgba(30, 27, 75, 0.35);
+}
+
+.ghost-signals__label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  opacity: 0.85;
+  margin-bottom: 0.5rem;
+  color: #c4b5fd;
+}
+
+.ghost-signals__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.1rem;
+  margin: 0 0 0.75rem;
+  color: #cbd5e1;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+}
+
+.ghost-signals__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ghost-signals__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.ghost-signals__dot--good {
+  background: linear-gradient(145deg, #4ade80, #16a34a);
+}
+
+.ghost-signals__dot--caution {
+  background: linear-gradient(145deg, #fb923c, #ea580c);
+}
+
+.ghost-signals__dot--alert {
+  background: linear-gradient(145deg, #f87171, #dc2626);
+}
+
+.ghost-signals__orbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.ghost-orb-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 100px;
+  text-align: center;
+}
+
+.ghost-orb {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.35), rgba(167, 139, 250, 0.4) 45%, rgba(91, 95, 151, 0.9));
+  box-shadow: 0 0 0 2px rgba(196, 181, 253, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+/* Default / purple — neutral if server omits signal */
+.ghost-orb--good {
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.45), rgba(74, 222, 128, 0.55) 42%, rgba(22, 163, 74, 0.95));
+  box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.55), inset 0 0 18px rgba(255, 255, 255, 0.2);
+}
+
+.ghost-orb--caution {
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.4), rgba(251, 146, 60, 0.55) 42%, rgba(234, 88, 12, 0.95));
+  box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.55), inset 0 0 18px rgba(255, 255, 255, 0.15);
+}
+
+.ghost-orb--alert {
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.4), rgba(248, 113, 113, 0.55) 42%, rgba(220, 38, 38, 0.95));
+  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.55), inset 0 0 18px rgba(255, 255, 255, 0.12);
+}
+
+.ghost-orb:hover,
+.ghost-orb:focus-visible {
+  transform: scale(1.08);
+  outline: none;
+}
+
+.ghost-orb--good:hover,
+.ghost-orb--good:focus-visible {
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.85), 0 0 24px rgba(34, 197, 94, 0.45);
+}
+
+.ghost-orb--caution:hover,
+.ghost-orb--caution:focus-visible {
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.85), 0 0 24px rgba(249, 115, 22, 0.45);
+}
+
+.ghost-orb--alert:hover,
+.ghost-orb--alert:focus-visible {
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.9), 0 0 24px rgba(239, 68, 68, 0.5);
+}
+
+.ghost-orb:not(.ghost-orb--good):not(.ghost-orb--caution):not(.ghost-orb--alert):hover,
+.ghost-orb:not(.ghost-orb--good):not(.ghost-orb--caution):not(.ghost-orb--alert):focus-visible {
+  box-shadow: 0 0 0 3px rgba(196, 181, 253, 0.8), 0 0 24px rgba(167, 139, 250, 0.6);
+}
+
+.ghost-orb__glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.35) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.ghost-orb--good .ghost-orb__glow {
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.45) 0%, transparent 70%);
+}
+
+.ghost-orb--caution .ghost-orb__glow {
+  background: radial-gradient(circle, rgba(251, 146, 60, 0.45) 0%, transparent 70%);
+}
+
+.ghost-orb--alert .ghost-orb__glow {
+  background: radial-gradient(circle, rgba(248, 113, 113, 0.5) 0%, transparent 70%);
+}
+
+.ghost-orb-wrap.is-lit .ghost-orb__glow {
+  opacity: 1;
+}
+
+.ghost-orb__title {
+  font-size: 0.68rem;
+  line-height: 1.2;
+  color: #e9d5ff;
+  word-break: break-word;
+}
+
+.ghost-signals__panel {
+  margin-top: 1.25rem;
+  padding: 1rem 1.1rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(196, 181, 253, 0.25);
+  min-height: 4.5rem;
+  opacity: 0.55;
+  transition: opacity 0.35s ease;
+}
+
+.ghost-signals__panel.is-visible {
+  opacity: 1;
+}
+
+.ghost-signals__panel-inner {
+  animation: ghostMaterialize 0.55s ease forwards;
+}
+
+@keyframes ghostMaterialize {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+.ghost-section-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #312e81;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.ghost-muted {
+  opacity: 0.85;
+}
+
+.pie-svg-wrap .pie-chart-meta strong {
+  color: #4338ca !important;
+}
+
+.pie-hover-floater {
+  min-width: 180px;
+  max-width: 260px;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+  border: 1px solid rgba(91, 95, 151, 0.22);
+  box-shadow: 0 10px 30px rgba(49, 46, 129, 0.12);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  font-size: 0.82rem;
+}
+
+.pie-hover-floater.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pie-hover-floater__kicker {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #7c3aed;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.pie-hover-floater__segment {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 0.95rem;
+}
+
+.pie-hover-floater__value {
+  font-variant-numeric: tabular-nums;
+  color: #5b5f97;
+  font-weight: 600;
+  margin: 0.25rem 0;
+}
+
+.pie-hover-floater__hint {
+  color: #64748b;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  margin-top: 0.35rem;
+}
+
+.pie-svg-inner {
+  min-height: 120px;
+}
+
+/* Narrow columns: don’t place hover card beside SVG (flex shrink was clipping the donut). */
+.pie-svg-inner--stacked .pie-svg-chart-row {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.pie-svg-inner--stacked .pie-hover-floater {
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  align-self: stretch;
+}
+
+.pie-svg-inner--stacked .pie-svg-canvas {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pie-legend-row.is-active {
+  background: rgba(91, 95, 151, 0.08);
+  border-radius: 6px;
+  margin: 0 -0.25rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .pie-hover-floater {
+    align-self: center;
+  }
+}

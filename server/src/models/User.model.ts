@@ -1,5 +1,10 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
+export interface ISavingsGoal {
+  label: string;
+  target?: number;
+}
+
 export interface IUser extends Document {
   email: string;
   password: string;
@@ -7,6 +12,12 @@ export interface IUser extends Document {
   semesterStart?: Date;
   semesterEnd?: Date;
   homeCurrency: string;
+  savingsGoalLabel?: string;
+  savingsGoalTarget?: number;
+  savingsGoals?: ISavingsGoal[];
+  jobTitle?: string;
+  /** false = must complete baseline onboarding; missing = legacy user (treated as done) */
+  onboardingComplete?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,6 +42,16 @@ const userSchema = new Schema<IUser>(
     semesterStart: { type: Date },
     semesterEnd: { type: Date },
     homeCurrency: { type: String, default: 'CAD', uppercase: true },
+    savingsGoalLabel: { type: String, trim: true, maxlength: 100, default: '' },
+    savingsGoalTarget: { type: Number, min: 0 },
+    savingsGoals: [
+      {
+        label: { type: String, trim: true, maxlength: 80 },
+        target: { type: Number, min: 0 },
+      },
+    ],
+    jobTitle: { type: String, trim: true, maxlength: 100, default: '' },
+    onboardingComplete: { type: Boolean },
   },
   { timestamps: true }
 );

@@ -1,0 +1,24 @@
+.onboarding-shell {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 0.5rem 2rem;
+}
+
+.onboarding-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 1.75rem;
+  border: 1px solid rgba(91, 95, 151, 0.12);
+}
+
+.onboarding-section {
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.onboarding-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}

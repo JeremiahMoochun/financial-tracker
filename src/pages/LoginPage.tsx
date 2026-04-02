@@ -13,7 +13,7 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/";
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/dashboard";
   const successMessage = (location.state as { message?: string })?.message;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,7 +26,11 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
       login(data.token, data.user);
-      navigate(from, { replace: true });
+      if (data.user.onboardingComplete === false) {
+        navigate("/onboarding", { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Invalid email or password.");
     } finally {

@@ -63,6 +63,11 @@ function Layout({ children }: LayoutProps) {
                   Expenses
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/settings">
+                  Settings
+                </Link>
+              </li>
             </ul>
             <ul className="navbar-nav ms-3 border-start border-light border-opacity-50 ps-3">
               <li className="nav-item">

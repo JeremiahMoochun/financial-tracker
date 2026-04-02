@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
-import { Transaction } from '../models/Transaction.model';
-import { AuthRequest } from '../middleware/auth.middleware';
+import { Transaction } from '../models/Transaction.model.js';
+import { AuthRequest } from '../middleware/auth.middleware.js';
 
 export const deleteTransaction = async (
   req: AuthRequest,
@@ -9,8 +9,8 @@ export const deleteTransaction = async (
   next: NextFunction
 ) => {
   try {
-    const user = req.user;
-    if (!user) {
+    const uid = req.user?.id;
+    if (!uid) {
       return res.status(401).json({ message: 'Unauthenticated' });
     }
 
@@ -32,10 +32,9 @@ export const deleteTransaction = async (
       return res.status(404).json({ message: 'Transaction not found' });
     }
 
-    const isOwner = tx.user.toString() === user._id.toString();
-    const isAdmin = user.role === 'admin';
+    const isOwner = tx.user.toString() === uid;
 
-    if (!isOwner && !isAdmin) {
+    if (!isOwner) {
       return res
         .status(403)
         .json({ message: 'You are not allowed to delete this transaction' });
@@ -47,7 +46,7 @@ export const deleteTransaction = async (
 
     tx.isDeleted = true;
     tx.deletedAt = new Date();
-    tx.deletedBy = new mongoose.Types.ObjectId(user._id);
+    tx.deletedBy = new mongoose.Types.ObjectId(uid);
     tx.deleteReason = reason.trim();
 
     await tx.save();
@@ -57,4 +56,3 @@ export const deleteTransaction = async (
     next(err);
   }
 };
-

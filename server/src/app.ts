@@ -7,6 +7,8 @@ import debtRoutes from './routes/debt.routes';
 import authRoutes from './routes/auth.routes';
 import incomeRoutes from './routes/income.routes';
 import expenseRoutes from './routes/expense.routes';
+import ghostRoutes from './routes/ghost.routes';
+import dashboardRoutes from './routes/dashboard.routes';
 
 const app = express();
 
@@ -23,6 +25,8 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/debts', debtRoutes);
 app.use('/api/income', incomeRoutes);
 app.use('/api/expense', expenseRoutes);
+app.use('/api/ghost', ghostRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 app.use(errorHandler);
 

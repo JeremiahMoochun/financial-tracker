@@ -1,11 +1,6 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { api } from '../api/client';
-
-interface User {
-  id: string;
-  email: string;
-  displayName?: string;
-}
+import type { User } from '../types/auth.types';
 
 interface AuthContextType {
   user: User | null;
@@ -14,6 +9,7 @@ interface AuthContextType {
   login: (token: string, user: User) => void;
   logout: () => Promise<void>;
   setToken: (t: string | null) => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -23,7 +19,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setTokenState] = useState<string | null>(() => localStorage.getItem('clearpath_token'));
   const [loading, setLoading] = useState(!!token);
 
-  const setToken = (newToken: string | null) => {
+  const setToken = useCallback((newToken: string | null) => {
     if (newToken) {
       localStorage.setItem('clearpath_token', newToken);
       setTokenState(newToken);
@@ -32,7 +28,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setTokenState(null);
       setUser(null);
     }
-  };
+  }, []);
+
+  const refreshUser = useCallback(async () => {
+    if (!token) return;
+    try {
+      const { user } = await api.request<{ user: User }>('/auth/me');
+      setUser(user);
+    } catch {
+      setToken(null);
+    }
+  }, [token, setToken]);
 
   useEffect(() => {
     if (!token) {
@@ -40,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     api.request<{ user: User }>('/auth/me').then(({ user }) => setUser(user)).catch(() => setToken(null)).finally(() => setLoading(false));
-  }, [token]);
+  }, [token, setToken]);
 
   const login = (newToken: string, userData: User) => {
     setToken(newToken);
@@ -57,7 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, logout, setToken }}>
+    <AuthContext.Provider value={{ user, token, loading, login, logout, setToken, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
